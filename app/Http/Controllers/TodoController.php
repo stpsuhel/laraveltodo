@@ -12,7 +12,7 @@ class TodoController extends Controller
     }
 
     public function allTodo(){
-        $todos = Todo::orderBy('completed')->get();
+        $todos = auth()->user()->todos()->orderBy('completed')->get();
         return view('todos.allTodos', compact('todos'));
     }
 
@@ -21,9 +21,8 @@ class TodoController extends Controller
     }
 
     public function saveTodo(TodoRequest $request){
-        $todo = new Todo();
-        $todo->title = $request->title;
-        $todo->save();
+
+        auth()->user()->todos()->create($request->all());
         return redirect()->back()->with('message', 'Todo Saved successfully');
     }
 
